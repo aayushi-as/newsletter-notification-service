@@ -43,6 +43,18 @@ public class ExceptionHandlerClass {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
 
+    @ExceptionHandler(DuplicateEmployeeException.class)
+    public ResponseEntity<?> handleDuplicateEmployeeException(DuplicateEmployeeException exception) {
+        log.error("Employee that you are trying to add already exists");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(DuplicateEventException.class)
+    public ResponseEntity<?> handleDuplicateEventException(DuplicateEventException exception) {
+        log.error("Event that you are trying to add already exists");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException(Exception exception) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());

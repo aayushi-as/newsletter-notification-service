@@ -18,7 +18,7 @@ public class Admin {
     @Email(message = "Enter valid email address")
     private String emailId;
 
-    @NotBlank(message = "Please provide a username")
+    @NotBlank(message = "Please provide username")
     private String fullName;
 
     @Size(min = 8, message = "Password must be at least 8 characters long")

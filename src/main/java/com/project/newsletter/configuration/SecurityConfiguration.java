@@ -34,7 +34,9 @@ public class SecurityConfiguration {
             ).permitAll();
 
             authorize.requestMatchers(
-                    "/api/v1/admin/ping"
+                    "/api/v1/admin/ping",
+                    "/api/v1/events/**",
+                    "/api/v1/employees/**"
             ).authenticated();
         }).csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
