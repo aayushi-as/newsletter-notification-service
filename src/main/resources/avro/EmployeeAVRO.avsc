@@ -1,0 +1,27 @@
+{
+    "namespace": "com.project.newsletter.dto",
+    "type": "record",
+    "name": "EmployeeAVRO",
+    "fields" : [
+        {
+            "name": "emailId",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "department",
+            "type": "string"
+        },
+        {
+            "name": "eventName",
+            "type": "string"
+        },
+        {
+             "name": "eventDesc",
+             "type": "string"
+        }
+    ]
+}
