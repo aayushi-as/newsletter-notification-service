@@ -1,12 +1,12 @@
 package com.project.newsletter.repository;
 
-import com.project.newsletter.model.Event;
+import com.project.newsletter.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface EventRepository extends JpaRepository<Event, Long> {
-    Optional<Event> findByName(String name);
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+    Optional<Category> findByName(String name);
 }

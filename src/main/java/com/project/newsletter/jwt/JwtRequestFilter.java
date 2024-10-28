@@ -1,6 +1,6 @@
 package com.project.newsletter.jwt;
 
-import com.project.newsletter.service.AdminDetailsServiceImpl;
+import com.project.newsletter.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -22,7 +22,7 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private AdminDetailsServiceImpl adminDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -43,7 +43,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         if (emailId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = adminDetailsService.loadUserByUsername(emailId);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(emailId);
 
             if (jwtUtil.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

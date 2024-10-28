@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/email")
 public class EmailController {
 
-    @Autowired
-    private KafkaProducer kafkaProducer;
-
-    @PostMapping("/dev-test")
-    public String devTestSendEvent(@RequestBody EmployeeAVRO employee) {
-        kafkaProducer.send(employee);
-        return "message published !";
-    }
+//    @Autowired
+//    private KafkaProducer kafkaProducer;
+//
+//    @PostMapping("/dev-test")
+//    public String devTestSendEvent(@RequestBody EmployeeAVRO employee) {
+//        kafkaProducer.send(employee);
+//        return "message published !";
+//    }
 }
