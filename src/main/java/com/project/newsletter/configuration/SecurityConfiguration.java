@@ -28,17 +28,17 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> {
 
-            authorize.requestMatchers(
-                    "/api/v1/admin/register",
-                    "/api/v1/admin/login"
-            ).permitAll();
-
-            authorize.requestMatchers(
-                    "/api/v1/admin/ping",
-                    "/api/v1/events/**",
-                    "/api/v1/employees/**",
-                    "/api/v1/email/**"
-            ).authenticated();
+            authorize
+                    .requestMatchers(
+                    "/api/v1/public/newsletter/**").permitAll()
+                    .requestMatchers(
+                            "/api/v1/category/**",
+                            "/api/v1/email/**",
+                            "/api/v1/admin/newsletter"
+                    ).hasRole("ADMIN")
+                    .requestMatchers("/api/v1/user/**")
+                    .hasAnyRole("USER", "ADMIN").anyRequest().authenticated();
+            
         }).csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

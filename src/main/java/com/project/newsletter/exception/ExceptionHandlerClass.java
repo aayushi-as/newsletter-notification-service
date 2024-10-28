@@ -33,7 +33,7 @@ public class ExceptionHandlerClass {
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<?> handleUserNotFoundException(UsernameNotFoundException exception) {
-        log.error("Admin not found");
+        log.error("Account not found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
@@ -43,15 +43,15 @@ public class ExceptionHandlerClass {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
 
-    @ExceptionHandler(DuplicateEmployeeException.class)
-    public ResponseEntity<?> handleDuplicateEmployeeException(DuplicateEmployeeException exception) {
-        log.error("Employee that you are trying to add already exists");
+    @ExceptionHandler(DuplicateUserException.class)
+    public ResponseEntity<?> handleDuplicateEmployeeException(DuplicateUserException exception) {
+        log.error("User that you are trying to add already exists");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
     }
 
-    @ExceptionHandler(DuplicateEventException.class)
-    public ResponseEntity<?> handleDuplicateEventException(DuplicateEventException exception) {
-        log.error("Event that you are trying to add already exists");
+    @ExceptionHandler(DuplicateCategoryException.class)
+    public ResponseEntity<?> handleDuplicateEventException(DuplicateCategoryException exception) {
+        log.error("Category that you are trying to add already exists");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
     }
 

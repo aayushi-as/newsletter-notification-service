@@ -1,8 +1,9 @@
 package com.project.newsletter.exception;
 
-public class DuplicateEventException extends RuntimeException{
+public class DuplicateUserException extends RuntimeException{
+
     private static final long serialVersionUID = 1L;
-    public DuplicateEventException(String message) {
+    public DuplicateUserException(String message) {
         super(message);
     }
 }

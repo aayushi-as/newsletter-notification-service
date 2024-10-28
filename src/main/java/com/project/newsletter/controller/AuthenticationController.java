@@ -3,9 +3,9 @@ package com.project.newsletter.controller;
 import com.project.newsletter.dto.LoginRequest;
 import com.project.newsletter.dto.LoginResponse;
 import com.project.newsletter.jwt.JwtUtil;
-import com.project.newsletter.model.Admin;
-import com.project.newsletter.service.AdminDetailsServiceImpl;
-import com.project.newsletter.service.AdminService;
+import com.project.newsletter.model.User;
+import com.project.newsletter.service.UserDetailsServiceImpl;
+import com.project.newsletter.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -25,14 +25,14 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/admin")
-public class AdminController {
+@RequestMapping("/api/v1/public/newsletter")
+public class AuthenticationController {
 
     @Autowired
-    private AdminService adminService;
+    private UserService userService;
 
     @Autowired
-    private AdminDetailsServiceImpl adminDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -49,27 +49,27 @@ public class AdminController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> createAdminAccount(@Valid @RequestBody Admin admin) {
-        log.info("createAdminAccount >>");
-        Optional<Admin> existingEmail = adminService.getAdmin(admin.getEmailId());
+    public ResponseEntity<?> createAccount(@Valid @RequestBody User user) {
+        log.info("createAccount >>");
+        Optional<User> existingEmail = userService.getUser(user.getEmailId());
 
         if (existingEmail.isPresent()) {
             log.warn("Email Id is already present {}", existingEmail.get().getEmailId());
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
         }
 
-        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-        adminService.registerAdmin(admin);
-        log.info("Registration of admin is successful! {}", admin.getFullName());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userService.addUser(user);
+        log.info("Registration is successful! {}", user.getName());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Admin registered successfully!");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Registered successfully!");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> adminLogin(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) throws AuthenticationException {
-        Optional<Admin> admin = adminService.getAdmin(loginRequest.getEmailId());
-        if (admin.isEmpty()) {
-            throw new UsernameNotFoundException("Admin not found!");
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) throws AuthenticationException {
+        Optional<User> user = userService.getUser(loginRequest.getEmailId());
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("Account with this email id not found!");
         }
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -77,8 +77,8 @@ public class AdminController {
                 loginRequest.getPassword()));
 
 
-        UserDetails userDetails = adminDetailsService.loadUserByUsername(loginRequest.getEmailId());
-        log.debug("Received user details");
+        UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmailId());
+        log.debug("Received account details");
 
         final String jwt = jwtUtil.generateToken(userDetails);
         log.debug("Generated token");
@@ -93,7 +93,7 @@ public class AdminController {
         log.debug("Cookie added");
 
         return ResponseEntity.ok(
-                new LoginResponse(admin.get().getEmailId(), admin.get().getFullName())
+                new LoginResponse(user.get().getEmailId(), user.get().getName(), user.get().getRole())
         );
     }
 

@@ -9,5 +9,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class LoginResponse implements Serializable {
     private String emailId;
-    private String fullName;
+    private String name;
+    private String role;
 }

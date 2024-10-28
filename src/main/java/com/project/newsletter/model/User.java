@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 @Data
 @Entity
-public class Employee {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -24,17 +25,20 @@ public class Employee {
     @NotBlank(message = "Please provide username")
     private String name;
 
-    @NotBlank(message = "Please provide department name")
-    private String department;
+    @Size(min = 8, message = "Password must be at least 8 characters long")
+    private String password;
+
+    @NotBlank(message = "Role should not be blank")
+    private String role;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             })
-    @JoinTable(name = "employee_event",
-            joinColumns = { @JoinColumn(name = "employee_id") },
-            inverseJoinColumns = { @JoinColumn(name = "event_id") })
+    @JoinTable(name = "user_subscribes_category",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "category_id") })
     @JsonIgnore
-    private Set<Event> events = new HashSet<>();
+    private Set<Category> categories = new HashSet<>();
 }
