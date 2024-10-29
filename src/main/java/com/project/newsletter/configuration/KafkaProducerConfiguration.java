@@ -1,6 +1,6 @@
 package com.project.newsletter.configuration;
 
-import com.project.newsletter.dto.EmployeeAVRO;
+import com.project.newsletter.dto.DetailsAVRO;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -29,12 +29,12 @@ public class KafkaProducerConfiguration {
     }
 
     @Bean
-    public ProducerFactory<String, EmployeeAVRO> producerFactory() {
+    public ProducerFactory<String, DetailsAVRO> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfig());
     }
 
     @Bean
-    public KafkaTemplate<String, EmployeeAVRO> kafkaTemplate() {
+    public KafkaTemplate<String, DetailsAVRO> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }

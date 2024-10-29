@@ -1,5 +1,7 @@
 package com.project.newsletter.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,8 +57,21 @@ public class ExceptionHandlerClass {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
     }
 
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<?> handleTokenExpirationException(ExpiredJwtException exception) {
+        log.error("Token expired {}", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(MessagingException.class)
+    public ResponseEntity<?> handleMessagingException(MessagingException exception) {
+        log.error("Exception occurred while sending mail {}", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException(Exception exception) {
+        log.error(exception.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
     }
 }

@@ -1,6 +1,6 @@
 package com.project.newsletter.configuration;
 
-import com.project.newsletter.dto.EmployeeAVRO;
+import com.project.newsletter.dto.DetailsAVRO;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -36,13 +36,13 @@ public class KafkaConsumerConfiguration {
     }
 
     @Bean
-    public ConsumerFactory<String, EmployeeAVRO> consumerFactory() {
+    public ConsumerFactory<String, DetailsAVRO> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfig());
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, EmployeeAVRO> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, EmployeeAVRO> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, DetailsAVRO> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, DetailsAVRO> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }

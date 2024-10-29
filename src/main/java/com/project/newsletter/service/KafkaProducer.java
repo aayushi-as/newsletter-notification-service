@@ -1,6 +1,8 @@
 package com.project.newsletter.service;
 
-import com.project.newsletter.dto.EmployeeAVRO;
+import com.project.newsletter.dto.DetailsAVRO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -13,20 +15,22 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class KafkaProducer {
 
+    private static final Logger log = LogManager.getLogger(KafkaProducer.class);
     @Autowired
-    private KafkaTemplate<String, EmployeeAVRO> template;
+    private KafkaTemplate<String, DetailsAVRO> template;
 
     @Value("${topic.name}")
     private String topicName;
 
-    public void send(EmployeeAVRO employee) {
-        CompletableFuture<SendResult<String, EmployeeAVRO>> future = template.send(topicName, UUID.randomUUID().toString(), employee);
+    public void send(DetailsAVRO details) {
+        log.info("Inside KafkaProducer >> send");
+        CompletableFuture<SendResult<String, DetailsAVRO>> future = template.send(topicName, UUID.randomUUID().toString(), details);
         future.whenComplete((result, ex) -> {
             if (ex == null) {
-                System.out.println("Sent message = [" + employee + "] with offset = [" + result.getRecordMetadata().offset() + "]");
+                log.info("Sent message = [{}] with offset = [{}]", details, result.getRecordMetadata().offset());
             }
             else {
-                System.out.println("Unable to sent message = [" + employee + "] due to: " + ex.getMessage());
+                log.error("Unable to sent message = [{}] due to: [{}]", details, ex.getMessage());
             }
         });
     }
