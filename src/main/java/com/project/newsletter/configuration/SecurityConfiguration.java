@@ -30,7 +30,18 @@ public class SecurityConfiguration {
 
             authorize
                     .requestMatchers(
-                    "/api/v1/public/newsletter/**").permitAll()
+                            "/api/v1/public/newsletter/**",
+                            "/v2/api-docs",
+                            "/configuration/ui",
+                            "/swagger-resources/**",
+                            "/configuration/security",
+                            "/swagger-ui.html",
+                            "/swagger-ui/*",
+                            "/webjars/**",
+                            "/v2/**",
+                            "/v3/api-docs/**",
+                            "/api-docs/**"
+                    ).permitAll()
                     .requestMatchers(
                             "/api/v1/category/**",
                             "/api/v1/email/**",
