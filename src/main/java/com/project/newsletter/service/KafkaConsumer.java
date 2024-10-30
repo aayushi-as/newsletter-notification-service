@@ -5,7 +5,9 @@ import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.DltHandler;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -15,6 +17,7 @@ public class KafkaConsumer {
     @Autowired
     private EmailService emailService;
 
+    @RetryableTopic(attempts = "4")
     @KafkaListener(topics = "${topic.name}")
     public void read(ConsumerRecord<String, DetailsAVRO> consumerRecord) throws MessagingException {
         log.info("Inside KafkaConsumer >> read");
@@ -23,5 +26,10 @@ public class KafkaConsumer {
         log.info("Avro message received for key: {}, value : {}", key, value);
 
         emailService.sendBulkEmail(value.getUsers(), value.getNewsletter());
+    }
+
+    @DltHandler
+    public void listenDLT(DetailsAVRO details) {
+        log.info("DLT Received : {} ",details.toString());
     }
 }
