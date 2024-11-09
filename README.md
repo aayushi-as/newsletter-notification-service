@@ -20,7 +20,7 @@ Newsletter Notification Service is a backend service built with Spring Boot that
 
 ## API Documentation
 The API endpoints are documented with Swagger UI, providing an interactive interface to test and view available endpoints. 
-- **Swagger UI**: [https://aayushi-as.github.io/newsletter-notification-service/](#)
+- **Swagger UI**: [Click here](https://aayushi-as.github.io/newsletter-notification-service/)
 
 ## Technology Stack
 
